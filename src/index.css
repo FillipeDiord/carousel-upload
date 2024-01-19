@@ -1,0 +1,160 @@
+@charset 'UTF-8';
+
+/*
+* reset.css
+* by Fillipe Diord
+*/
+
+
+/**
+* At-rules - Set the encoding of the style sheet to Unicode UTF-8
+* Mozilla Developer Network [https://developer.mozilla.org/en-US/docs/Web/CSS/@charset]
+*
+* @charset "UTF-8";
+*/
+
+
+/**
+* Basic UI - Apply a natural box layout model to all elements. [Firefox, WebKit, Opera and IE8+]
+* Paul Irish [http://www.paulirish.com/2012/box-sizing-border-box-ftw/]
+*/
+
+html {
+  box-sizing: border-box;
+}
+
+html * {
+  box-sizing: inherit;
+}
+
+
+/**
+* Basic Box Model - Correct 'block' display not defined in [IE 8+]
+*/
+
+article,
+aside,
+datagrid,
+datalist,
+details,
+dialog,
+figure,
+footer,
+header,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+}
+
+abbr,
+eventsource,
+mark,
+meter,
+time,
+output,
+bb {
+  display: inline;
+}
+
+
+/* Basic Box Model - Remove default Margin. */
+
+body,
+blockquote,
+figure,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+
+/* Basic Box Model - Remove default Margin and Padding. */
+
+button,
+code,
+dd,
+dl,
+dt,
+fieldset,
+hr,
+input,
+legend,
+menu,
+ol,
+pre,
+select,
+td,
+textarea,
+th,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+
+/* Remove default Border. */
+
+a img,
+abbr,
+button,
+fieldset,
+hr,
+iframe,
+input,
+select,
+table,
+textarea {
+  border: 0 none;
+}
+
+
+/* Alignments */
+
+label,
+button,
+input,
+select,
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+:root {
+  font: normal normal normal 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+:root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #505050;
+  font-family: 'Inter';
+  background-color: #DBDADA;
+}

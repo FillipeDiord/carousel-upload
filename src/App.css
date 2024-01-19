@@ -1,0 +1,45 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0px;
+  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.arrow-return-image {
+  cursor: pointer;
+  height: 3rem;
+}
+
+.arrow-next-image {
+  cursor: pointer;
+  height: 3rem;
+}
+
+.arrow-return-image-selected {
+  display: none;
+}
+
+.arrow-return-image:hover + .arrow-return-image-selected {
+  display: block;
+}
+
+.arrow-return-image:hover {
+  display: none;
+}
+
+.arrow-next-image-selected {
+  display: none;
+}
+
+.arrow-next-image:hover + .arrow-next-image-selected {
+  display: block;
+}
+
+.arrow-next-image:hover {
+  display: none;
+}
+
