@@ -1,0 +1,8 @@
+.images-carousel {
+  cursor: pointer;
+}
+
+.images-carousel:hover {
+  cursor: pointer;
+  filter: brightness(60%);
+}
