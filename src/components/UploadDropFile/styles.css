@@ -1,0 +1,77 @@
+.container-component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.80rem;
+  margin: 20px;
+  width: 51rem;
+  height: 15rem;
+  background-color: #FFFFFF;
+  border: 2px dashed #AEAEAE;
+  border-radius: 1.25rem;
+  box-shadow: 0px 24.72px 32.96px -32.96px rgba(2, 43, 73, 0.25);
+}
+
+.container-message-and-drag-drop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.80rem;
+}
+
+.message-or {
+  color: #9B9B9B;
+  font-family: 'Inter';
+  font-size: 1.545rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.message-drag-drop {
+  color: #505050;
+  font-family: 'Inter';
+  font-size: 1.80rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.container-show-images {
+  display: flex;
+  align-items: center;
+  width: 51rem;
+  height: 15rem;
+  border-radius: 1.25rem;
+  background-color: #FFFFFF;
+  margin: 20px;
+}
+
+.images-carousel {
+  width: 13rem;
+  height: 13rem;
+  border-radius: 0.9rem;
+  margin: 1.25rem;
+}
+
+.container-add-new-images {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 13rem;
+  height: 13rem;
+  border-radius: 0.9rem;
+  margin: 1.25rem 0 1.25rem 1.25rem;
+  background-color: #CFCFCF;
+  gap: 1.31rem;
+}
+
+.btn-add-new-image {
+  background-color: #CFCFCF;
+  cursor: pointer;
+}
+
+.img-add-new-image {
+  background-color: #CFCFCF;
+}
