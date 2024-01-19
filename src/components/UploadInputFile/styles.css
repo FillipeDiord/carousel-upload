@@ -1,0 +1,25 @@
+.btn-upload-archive {
+  display: flex;
+  align-items: center;
+  border-radius: 4rem;
+  padding: 0 2.06rem;
+  height: 5rem;
+  color: #4977BA;
+  font-weight: 600;
+  line-height: 1.25rem;
+  font-size: 1.5rem;
+  box-shadow: 0px 8.24px 24.72px -8.24px rgba(0, 0, 0, 0.12);
+  background-color: #FFFFFF;
+  border: 2.06px solid #D9D9D9;
+  cursor: pointer;
+  gap: 1.3rem;
+}
+
+.img-upload-btn {
+  display: flex;
+  align-items: center;
+}
+
+.input-file-upload {
+  display: none;
+}
