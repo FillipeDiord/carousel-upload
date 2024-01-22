@@ -17,7 +17,9 @@ function App() {
       <img
         src={ArrowRightClicked}
         alt="Selecionar voltar imagem"
-        className='arrow-return-image-selected' />
+        className='arrow-return-image-selected'
+        onClick={() => scroll({ left: -20 })}
+      />
       <CarouselUploader />
       <img
         src={ArrowLeftNoClicked}
@@ -26,7 +28,9 @@ function App() {
       <img
         src={ArrowLeftClicked}
         alt="Selecionar Avançar imagem"
-        className='arrow-next-image-selected' />
+        className='arrow-next-image-selected'
+        onClick={() => scroll({ left: 20 })}
+      />
     </>
   )
 }
