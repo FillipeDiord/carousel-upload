@@ -1,21 +1,33 @@
-import { useState, DragEvent, useRef, useCallback } from 'react';
+import { 
+  useState, 
+  DragEvent, 
+  useCallback, 
+  useEffect, 
+  useRef, 
+  MouseEvent } from 'react';
+import { Image } from '../Image';
+import { InputUpload } from '../InputUpload';
 
 import './styles.css';
-import AddNewImage from '../../assets/add-new-image.svg';
 import DeleteImage from '../../assets/delete-image.svg';
-import ArrowUp from './../../assets/btn-arrow-up.svg';
+import ArrowRightNoClicked from '../../assets/arrow-right-no-clicked.svg';
+import ArrowRightClicked from '../../assets/arrow-right-clicked.svg';
+import ArrowLeftNoClicked from '../../assets/arrow-left-no-clicked.svg';
+import ArrowLeftClicked from '../../assets/arrow-left-clicked.svg';
+import Upload from '../../assets/upload.svg';
+import Error from '../../assets/error.svg';
 
 export function CarouselUploader() {
-  const [files, setFiles] = useState<File[]>([]);
-  const [dataArchives, setDataArchives] = useState<string[]>([]);
-  const [isDragOver, setIsDragOver] = useState<boolean>(false);
-  const inputFile = useRef<HTMLInputElement>(null);
-
+  const [images, setImages] = useState<string[] | []>([]);
+  const [haveFile, setHaveFile] = useState(false);
+  const [dragAndDropImage, setDragAndDropImage] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const carouselUploader = useRef<HTMLDivElement>(null);
 
   function handleDragOver(event: DragEvent<HTMLDivElement>) {
     event.preventDefault();
 
-    setIsDragOver(true);
+    setDragAndDropImage(true);
   }
 
   function handleDragLeave(event: DragEvent<HTMLDivElement>) {
@@ -25,141 +37,183 @@ export function CarouselUploader() {
   function handleUploadFileDragAndDrop(event: DragEvent<HTMLDivElement>) {
     event.preventDefault();
 
-    handleUploadDropFiles(event);
+    setDragAndDropImage(false);
+    handleImagesState(null, event);
   }
 
-  function handleUploadFile() {
-    if (inputFile.current) {
-      inputFile.current.click();
+  function handleImagesState(file: Blob | null, event: DragEvent<HTMLDivElement> | null) {
+    if (event) {
+      const droppedFiles = Array.from(event.dataTransfer.files);
+      const listImagesUrl: string[] = [];
+
+      droppedFiles.forEach((file) => {
+        const validatedFile = fileValidation(file as Blob);
+
+        if (validatedFile) {
+          const urlImage = URL.createObjectURL(validatedFile);
+          listImagesUrl.push(urlImage);
+        }
+      });
+
+      setImages(prevImages =>
+        [...prevImages,
+        ...listImagesUrl]
+      );
+
+      setHaveFile(true);
     }
-  }
-
-  function handleUploadInputFiles(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
 
     if (file) {
-      const reader = new FileReader();
+      const validatedFile = fileValidation(file);
 
-      reader.onloadend = () => {
-        setFiles([file])
-        setDataArchives(prevState =>
-          [...prevState, reader.result as string]
+      if (validatedFile) {
+        const urlImage = URL.createObjectURL(validatedFile);
+        setImages(prevImages =>
+          [...prevImages,
+            urlImage
+          ]
         );
-      };
-
-      reader.onerror = () => {
-        console.error("There was an issue reading the file");
-      };
-
-      reader.readAsDataURL(file);
+        setHaveFile(true);
+      }
     }
   }
 
-  function handleUploadDropFiles(event: React.DragEvent<HTMLDivElement>) {
-    const droppedFiles = Array.from(event.dataTransfer.files);
-    setFiles(droppedFiles);
+  function fileValidation(file: Blob) {
+    const maxSize = 1024 * 1024 // 1 MB
 
-    droppedFiles.forEach((file) => {
-      const reader = new FileReader();
+    if (file.size > maxSize || file.type == 'application/pdf') {
+      if (images.length === 0) {
+        setHaveFile(false);
+      }
 
-      reader.onloadend = () => {
-        setDataArchives(prevState =>
-          [...prevState, reader.result as string]
-        )
-      };
-
-      reader.onerror = () => {
-        console.error('There was an issue reading the file');
-      };
-
-      reader.readAsDataURL(file);
-
-      return reader;
-    })
+      setHasError(true);
+      return null
+    }
+    return file as Blob;
   }
 
   const handleDeleteImage = useCallback((index: number) => {
-    setFiles(files.filter((file, i) => i !== index));
-    setDataArchives(dataArchives.filter((data, i) => i !== index));
-  }, [files, dataArchives])
+    setImages(prevImages => [...prevImages.filter((_, i) => i !== index)]);
+  }, []);
+
+  function handleMoveLeft(event: MouseEvent<HTMLImageElement>) {
+    event.preventDefault();
+
+    if (carouselUploader.current?.offsetWidth) {
+      carouselUploader.current.scrollLeft -= carouselUploader.current?.offsetWidth;
+    }
+  }
+
+  function handleMoveRight(event: MouseEvent<HTMLImageElement>) {
+    event.preventDefault();
+
+    if (carouselUploader.current?.offsetWidth) {
+      carouselUploader.current.scrollLeft += carouselUploader.current?.offsetWidth;
+    }
+  }
+
+  useEffect(() => {
+    if (images.length === 0) {
+      setHaveFile(false);
+    }
+  }, [images]);
+
 
   return (
     <>
-      <div
-        className='container-component'
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleUploadFileDragAndDrop}
-      >
-        {!dataArchives.length ?
-          <>
-            <input
-              className='input-file-upload'
-              type="file"
-              accept='image/*'
-              id='image-input'
-              ref={inputFile}
-              onChange={handleUploadInputFiles}
-            />
-            <button
-              className='btn-upload-archive'
-              onClick={handleUploadFile}
+      <Image
+        src={ArrowLeftNoClicked}
+        alt="Voltar imagem"
+        className='arrow-return-image' />
+      <Image
+        src={ArrowLeftClicked}
+        alt="Selecionar voltar imagem"
+        className='arrow-return-image-selected'
+        onClick={handleMoveLeft}
+      />
+      <>
+        <div
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleUploadFileDragAndDrop}
+          className='container-drag-and-drop'
+        >
+          {haveFile ?
+            <div
+              className='container-show-images'
+              ref={carouselUploader}
             >
-              <img
-                src={ArrowUp}
-                alt="Upload de imagem"
-                className='img-upload-btn' />
-              Click to upload
-            </button>
-            <div className='container-message-and-drag-drop'>
-              <span className='message-or'>or</span>
-              <span className='message-drag-drop'>Drag and drop a file here</span>
-            </div>
-          </>
-          :
-          <div className='container-show-images'>
-            <div className='container-add-new-images'>
-              <input
-                className='input-file-upload'
-                type="file"
-                accept='image/*'
-                id='image-input'
-                ref={inputFile}
-                onChange={handleUploadInputFiles}
+              <InputUpload
+                updatedStateImages={handleImagesState}
+                haveFile={haveFile}
               />
-              <button
-                className='btn-add-new-image'
-                onClick={handleUploadFile}
-              >
-                <img
-                  src={AddNewImage}
-                  alt='Adicionar nova imagem'
-                  className='img-add-new-image' />
-              </button>
-              Add new images
+              {images.map((image, index) =>
+                <div
+                  key={index}
+                  className='container-image-and-btn-delete'
+                >
+                  <Image
+                    src={DeleteImage}
+                    className='btn-delete-image'
+                    alt='Deletar imagem'
+                    onClick={() => handleDeleteImage(index)}
+                  />
+                  <Image
+                    src={image}
+                    alt="imagem"
+                    className='images-carousel'
+                  />
+                </div>
+              )}
             </div>
-            {dataArchives.map((dataFile, index) =>
-              <div
-                key={dataFile}
-                className='container-image-and-btn-delete'
-              >
-                <img
-                  src={DeleteImage}
-                  className='btn-delete-image'
-                  alt='Deletar imagem'
-                  data-index={index}
-                  onClick={() => handleDeleteImage(index)}
-                />
-                <img
-                  src={dataFile}
-                  alt="imagem"
-                  className='images-carousel'
-                />
-              </div>
-            )}
-          </div>
-        }
-      </div>
+            :
+            <div className='container-component'>
+              <InputUpload
+                updatedStateImages={handleImagesState}
+                haveFile={haveFile}
+              />
+            </div>
+          }
+          {dragAndDropImage &&
+            <div
+              className='container-backdrop-drag-and-drop'
+            >
+              <Image
+                src={Upload}
+                alt='Imagem de upload de aquivo'
+                className='image-upload-file'
+              />
+              <p className='title-drag-and-drop'>Drag here to upload</p>
+              <p className='subtitle-drag-and-drop'>PNG or JPG (max. 1MB)</p>
+            </div>
+          }
+          {hasError &&
+            <div
+              className='container-backdrop-error'
+            >
+              <Image
+                src={Error}
+                alt='Imagem de erro de upload'
+                className='image-error'
+              />
+              <p className='title-error'>Failed to upload</p>
+              <p className='subtitle-error'>
+                Please check if the image has the right size and extension and
+                &nbsp;<a onClick={() => setHasError(false)}>try again</a></p>
+            </div>
+          }
+        </div>
+      </>
+      <Image
+        src={ArrowRightNoClicked}
+        alt="Avançar imagem"
+        className='arrow-next-image' />
+      <Image
+        src={ArrowRightClicked}
+        alt="Selecionar Avançar imagem"
+        className='arrow-next-image-selected'
+        onClick={handleMoveRight}
+      />
     </>
   );
 }
