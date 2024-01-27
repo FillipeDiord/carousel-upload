@@ -137,6 +137,7 @@ export function CarouselUploader() {
           onDragLeave={handleDragLeave}
           onDrop={handleUploadFileDragAndDrop}
           className='container-drag-and-drop'
+          data-testid='container-drag-and-drop'
         >
           {haveFile ?
             <div
