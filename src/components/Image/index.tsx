@@ -1,4 +1,4 @@
-import { ImgHTMLAttributes } from "react";
+import { ImgHTMLAttributes } from 'react';
 
 import './styles.css';
 
