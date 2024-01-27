@@ -1,0 +1,21 @@
+.btn-upload-archive {
+  display: flex;
+  align-items: center;
+  border-radius: 4rem;
+  padding: 0 2.06rem;
+  height: 5rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  line-height: 1.25rem;
+  font-size: 1.5rem;
+  box-shadow: 0px 8.24px 24.72px -8.24px rgba(0, 0, 0, 0.12);
+  background-color: var(--white-color);
+  border: 2.06px solid var(--tertiary-color);
+  cursor: pointer;
+  gap: 1.3rem;
+}
+
+.btn-add-new-image {
+  background-color: var(--secondary-color);
+  cursor: pointer;
+}
